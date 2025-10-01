@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Waffle Chart</title>
+
+<script>
+// Try to load communicate.js if parent doesn't expose Revisit
+(function(){
+  function hasRevisit(){ try{ return (window.parent && window.parent.Revisit) || window.Revisit || null; }catch(e){ return null; } }
+  if(!hasRevisit()){
+    var tried=0, paths=[
+      "../../revisitUtilities/revisit-communicate.js",
+      "/revisitUtilities/revisit-communicate.js",
+      "../revisitUtilities/revisit-communicate.js",
+      "revisitUtilities/revisit-communicate.js"
+    ];
+    function tryLoad(){
+      if(tried>=paths.length) return;
+      var s=document.createElement('script');
+      s.src=paths[tried++];
+      s.onload=function(){ console.debug("Loaded communicate.js:", s.src); };
+      s.onerror=function(){ console.warn("Failed to load", s.src); tryLoad(); };
+      document.head.appendChild(s);
+    }
+    tryLoad();
+  }
+})();
+</script>
+
+<style>
+  :root{ --light:#cfe5ff; --dark:#0a66a1; --empty:#eee; }
+  body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  .wrap{padding:16px;}
+  .chartWrap{ position:relative; width:max-content; --label-gutter:120px; padding-left:var(--label-gutter); }
+  .labelLayer{position:absolute; inset:0; pointer-events:none}
+  .lbl{ position:absolute; transform:translateX(-100%) translateY(-50%); display:flex; gap:8px; white-space:nowrap; font-size:16px; color:#222; font-weight:600; }
+  .chip{width:14px; height:14px; border-radius:3px; display:inline-block}
+  .chip.light{background:var(--light)} .chip.dark{background:var(--dark)}
+  .grid{display:grid; grid-template-columns:repeat(10,26px); grid-auto-rows:26px; gap:4px; width:max-content}
+  .cell{width:26px; height:26px; border-radius:5px; background:var(--empty); position:relative; overflow:hidden}
+  .cell .light{position:absolute; inset:0; background:var(--light)}
+  .cell .dark {position:absolute; inset:0; background:var(--dark)}
+  .legend, .meta, .debug {display:none}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="chart" class="chartWrap"></div></div>
+
+<script>
+(function(){
+  /* ================= Hide ALL system fields + any (ระบบ) text blocks ================= */
+  (function installGlobalHide(){
+    const TOKENS = ['_true_phone','_true_offer','_pair','_layout','_colorDir','_labelA','_labelB','_group'];
+    const sel = TOKENS.map(t => `[data-path$="${t}"]`).join(',');
+
+    function hideRoot(el){
+      if(!el) return;
+      // Don't ever hide buttons (like Next)
+      if(el.tagName === 'BUTTON') return;
+      const root = el.closest(
+        '[class*="mantine-TextInput-root"],[class*="mantine-Textarea-root"],' +
+        '[class*="mantine-NumberInput-root"],[class*="mantine-Input-root"],' +
+        '[class*="mantine-InputWrapper-root"],[data-path]'
+      ) || el;
+      // Guard again: skip if the root contains a role="button"
+      if(root.querySelector('button')){
+        // still can hide the element itself if it is a response row
+        if (el !== root) { el.style.setProperty('display','none','important'); el.setAttribute('aria-hidden','true'); }
+        return;
+      }
+      root.style.setProperty('display','none','important');
+      root.setAttribute('aria-hidden','true');
+    }
+
+    function hideNow(doc){
+      // 1) Hide by data-path tokens (inputs + wrappers)
+      doc.querySelectorAll(sel).forEach(hideRoot);
+
+      // 2) Hide any text-only "(ระบบ) ..." blocks (both sidebar and main content)
+      const textSelectors = 'div, p, span, label, dd, dt, li';
+      doc.querySelectorAll(`aside ${textSelectors}, main ${textSelectors}, ${textSelectors}`).forEach(el => {
+        const t = (el.textContent || '').trim();
+        if (t.startsWith('(ระบบ)')) hideRoot(el);
+      });
+    }
+
+    function install(doc){
+      if (!doc.getElementById('waffle-hide-system-fields')) {
+        const style = doc.createElement('style');
+        style.id = 'waffle-hide-system-fields';
+        style.textContent = `${sel}{display:none !important;}`;
+        doc.head.appendChild(style);
+      }
+      const run = ()=> hideNow(doc);
+      run();
+      try{
+        const mo = new MutationObserver(run);
+        mo.observe(doc.body, {childList:true, subtree:true}); // keep alive
+      }catch(_){}
+      doc.addEventListener('click', run, true);
+      doc.addEventListener('visibilitychange', run);
+    }
+
+    try {
+      const pd = window.parent && window.parent.document;
+      if (pd && pd.head) install(pd); else install(document);
+    } catch(_) { install(document); }
+  })();
+  /* ================================================================================ */
+
+  const qs = new URLSearchParams(location.search);
+  const idx = Math.max(0, parseInt(qs.get('idx') || '0', 10));
+
+  // ------- plan & indices (same behaviour as your working version) -------
+  const PLAN_KEY='wafflePlan_v7';
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const shuffled=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+
+  function indicesHorizontalLeft(n){
+    const res=[]; for(let r=9;r>=0&&res.length<n;r--) for(let c=0;c<10&&res.length<n;c++) res.push(r*10+c); return res;
+  }
+  function indicesSquare(n){
+    const side=Math.max(1,Math.min(10,Math.ceil(Math.sqrt(n))));
+    const res=[]; for(let r=9;r>=0&&res.length<n;r--) for(let c=0;c<side&&res.length<n;c++) res.push(r*10+c); return res;
+  }
+  function buildPlan(){
+    const pairs={
+      "Low–Low": [[4,9],[4,16],[4,25],[9,16],[9,25],[16,25]],
+      "Low–High": [[4,36],[4,49],[4,64],[4,81],[9,36],[9,49],[9,64],[9,81],[16,36],[16,49],[16,64],[16,81],[25,36],[25,49],[25,64],[25,81]],
+      "High–High": [[36,49],[36,64],[36,81],[49,64],[49,81],[64,81]]
+    };
+    const chosen=Object.entries(pairs).map(([g,a])=>({group:g,pair:pick(a)}));
+    const styles=[
+      {layout:"horizontal", colorDir:"light→dark"},
+      {layout:"horizontal", colorDir:"dark→light"},
+      {layout:"square",     colorDir:"light→dark"},
+      {layout:"square",     colorDir:"dark→light"}
+    ];
+    const trials=[]; for(const st of styles) for(const c of chosen) trials.push({...st,...c}); return shuffled(trials);
+  }
+
+  let plan=sessionStorage.getItem(PLAN_KEY);
+  if(!plan){ plan=JSON.stringify(buildPlan()); sessionStorage.setItem(PLAN_KEY,plan); }
+  plan=JSON.parse(plan);
+  const trial=plan[idx]||plan[0];
+
+  const colorRole=(trial.colorDir==='light→dark')?{A:'light',B:'dark'}:{A:'dark',B:'light'};
+  let Aidx=[], Bidx=[];
+  if(trial.layout==='horizontal'){ Aidx=indicesHorizontalLeft(trial.pair[0]); Bidx=indicesHorizontalLeft(trial.pair[1]); }
+  else { Aidx=indicesSquare(trial.pair[0]); Bidx=indicesSquare(trial.pair[1]); }
+
+  // ------- render -------
+  const holder=document.getElementById('chart'); holder.innerHTML='';
+  const grid=document.createElement('div'); grid.className='grid';
+  const cells=Array.from({length:100},()=>{const d=document.createElement('div'); d.className='cell'; return d;});
+  const order=(Aidx.length>=Bidx.length)
+    ?[{name:'A',idx:Aidx,role:colorRole.A},{name:'B',idx:Bidx,role:colorRole.B}]
+    :[{name:'B',idx:Bidx,role:colorRole.B},{name:'A',idx:Aidx,role:colorRole.A}];
+  order[0].idx.forEach(i=>{const d=document.createElement('div'); d.className=order[0].role; cells[i].appendChild(d);});
+  order[1].idx.forEach(i=>{const d=document.createElement('div'); d.className=order[1].role; cells[i].appendChild(d);});
+  cells.forEach(c=>grid.appendChild(c)); holder.appendChild(grid);
+
+  const labelLayer=document.createElement('div'); labelLayer.className='labelLayer'; holder.appendChild(labelLayer);
+
+  function resolveOverlap(aLbl,bLbl,minGap=22){
+    if(!aLbl||!bLbl) return;
+    const a=aLbl.getBoundingClientRect(), b=bLbl.getBoundingClientRect();
+    const gap=Math.abs((a.top+a.height/2)-(b.top+b.height/2));
+    if(gap<minGap){
+      const lower = (a.top > b.top ? aLbl : bLbl);
+      const cur = parseFloat(lower.style.top||'0');
+      lower.style.top = (cur + (minGap-gap)) + 'px';
+    }
+  }
+
+  // fill/hide responses + postAnswers
+  function setVal(inp, value){
+    inp.value=String(value);
+    inp.dispatchEvent(new Event('input',{bubbles:true}));
+    inp.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+  function fillAndHideByDataPath(pd, id, value){
+    const el = pd.querySelector(`[data-path="${id}"]`);
+    if(!el) return false;
+    const inp = el.querySelector('input, textarea');
+    if(inp) setVal(inp, value);
+    el.style.setProperty('display','none','important');
+    el.setAttribute('aria-hidden','true');
+    return true;
+  }
+  function injectHideCSS(pd){
+    if(pd.getElementById('waffle-hide-true-fields')) return;
+    const s=pd.createElement('style'); s.id='waffle-hide-true-fields';
+    s.textContent=`
+      [data-path$="_true_phone"],
+      [data-path$="_true_offer"],
+      [data-path$="_pair"],
+      [data-path$="_layout"],
+      [data-path$="_colorDir"],
+      [data-path$="_labelA"],
+      [data-path$="_labelB"],
+      [data-path$="_group"]{ display:none !important; }
+    `;
+    pd.head.appendChild(s);
+  }
+  function ensureAnswersHidden(prefix, phoneVal, offerVal){
+    try{
+      const pd=window.parent && window.parent.document; if(!pd) return;
+      injectHideCSS(pd);
+      const run=()=>{
+        fillAndHideByDataPath(pd, prefix+'true_phone', phoneVal);
+        fillAndHideByDataPath(pd, prefix+'true_offer', offerVal);
+        ['pair','layout','colorDir','labelA','labelB','group'].forEach(k=>{
+          fillAndHideByDataPath(pd, prefix + k, '');
+        });
+      };
+      run();
+      let tries=0; const iv=setInterval(()=>{ run(); if(++tries>40) clearInterval(iv); },200);
+      const mo=new MutationObserver(run); mo.observe(pd.body,{childList:true,subtree:true});
+    }catch(e){}
+  }
+  function getIdPrefixFromUrl(){ const i=(qs.get('idx')||'0'); const n=String(parseInt(i,10)+1).padStart(2,'0'); return `t${n}_`; }
+
+  function place(){
+    const grid=document.querySelector('.grid');
+    const cs=getComputedStyle(grid); const gap=parseInt(cs.gap.split(' ')[0],10)||4;
+    const cell=document.querySelector('.cell').offsetWidth; const gridLeft=grid.offsetLeft;
+
+    function makeLabel(indices, colorClass, text){
+      if(!indices||!indices.length) return null;
+      const r=Math.floor(Math.min(...indices)/10); const topPx=grid.offsetTop + r*(cell+gap) + (cell/2);
+      const lbl=document.createElement('div'); lbl.className='lbl';
+      lbl.style.top=`${topPx}px`; lbl.style.left=(gridLeft-8)+'px';
+      lbl.innerHTML=`<span>${text}</span><span class="chip ${colorClass}"></span>`;
+      document.querySelector('.labelLayer').appendChild(lbl); return lbl;
+    }
+
+    document.querySelector('.labelLayer').innerHTML='';
+    const isASmallerOrEqual = Aidx.length <= Bidx.length;
+    const aLbl=makeLabel(Aidx, (trial.colorDir==='light→dark')?'light':'dark', isASmallerOrEqual?'Offer':'Phone screen');
+    const bLbl=makeLabel(Bidx, (trial.colorDir==='light→dark')?'dark':'light', isASmallerOrEqual?'Phone screen':'Offer');
+
+    resolveOverlap(aLbl,bLbl);
+    const widths=[aLbl,bLbl].filter(Boolean).map(el=>el.getBoundingClientRect().width);
+    const maxW=widths.length?Math.max(...widths):0; document.getElementById('chart').style.setProperty('--label-gutter',(maxW+24)+'px');
+    requestAnimationFrame(()=>resolveOverlap(aLbl,bLbl));
+
+    const prefix=getIdPrefixFromUrl();
+    ensureAnswersHidden(prefix, Aidx.length, Bidx.length);
+
+    // postAnswers
+    (function(){
+      function getR(){ try{ return (window.parent && window.parent.Revisit) || window.Revisit || null; }catch(e){ return null; } }
+      function fillIfPresent(pd, path, val){
+        try{
+          const el = pd.querySelector(`[data-path="${path}"]`);
+          const n = el && el.querySelector('input, textarea');
+          if(n){ n.value = String(val); n.dispatchEvent(new Event('input', {bubbles:true})); n.dispatchEvent(new Event('change',{bubbles:true})); }
+        }catch(e){}
+      }
+      const isASmaller = Aidx.length <= Bidx.length;
+      const offer = isASmaller ? Aidx.length : Bidx.length;
+      const phone = isASmaller ? Bidx.length : Aidx.length;
+      const labelA = isASmaller ? 'Offer' : 'Phone screen';
+      const labelB = isASmaller ? 'Phone screen' : 'Offer';
+      const pairAB = `${Aidx.length}-${Bidx.length}`;
+
+      const payload = {};
+      const pfx = getIdPrefixFromUrl();
+      payload[pfx+'pair']       = pairAB;
+      payload[pfx+'true_offer'] = offer;
+      payload[pfx+'true_phone'] = phone;
+      payload[pfx+'layout']     = trial.layout;
+      payload[pfx+'colorDir']   = trial.colorDir;
+      payload[pfx+'labelA']     = labelA;
+      payload[pfx+'labelB']     = labelB;
+      if (trial.group) payload[pfx+'group'] = trial.group;
+
+      let attempts=0;
+      (function tryPost(){
+        const R=getR();
+        if(R && typeof R.postAnswers==='function'){
+          try{ R.postAnswers(payload); }catch(e){ console.warn('postAnswers error', e); }
+        } else {
+          if(attempts++ < 10) return setTimeout(tryPost, 200);
+          const pd = window.parent && window.parent.document;
+          if(!pd) return;
+          for (const [k,v] of Object.entries(payload)) fillIfPresent(pd, k, v);
+        }
+      })();
+    })();
+  }
+
+  (function buildGrid(){
+    const holder=document.getElementById('chart'); holder.innerHTML='';
+    const grid=document.createElement('div'); grid.className='grid';
+    const cells=Array.from({length:100},()=>{const d=document.createElement('div'); d.className='cell'; return d;});
+    const order=(Aidx.length>=Bidx.length)
+      ?[{name:'A',idx:Aidx,role:(trial.colorDir==='light→dark')?'light':'dark'},
+        {name:'B',idx:Bidx,role:(trial.colorDir==='light→dark')?'dark':'light'}]
+      :[{name:'B',idx:Bidx,role:(trial.colorDir==='light→dark')?'dark':'light'},
+        {name:'A',idx:Aidx,role:(trial.colorDir==='light→dark')?'light':'dark'}];
+    order[0].idx.forEach(i=>{const d=document.createElement('div'); d.className=order[0].role; cells[i].appendChild(d);});
+    order[1].idx.forEach(i=>{const d=document.createElement('div'); d.className=order[1].role; cells[i].appendChild(d);});
+    cells.forEach(c=>grid.appendChild(c)); holder.appendChild(grid);
+    const labelLayer=document.createElement('div'); labelLayer.className='labelLayer'; holder.appendChild(labelLayer);
+  })();
+
+  requestAnimationFrame(()=>{ setTimeout(place,0); });
+  window.addEventListener('resize',()=>{ place(); });
+
+  // compact number inputs on sidebar if present
+  try{
+    const pd=window.parent && window.parent.document;
+    const SIDE_TEXT="กรอกคำตอบเป็นตัวเลขจำนวนเต็มเท่านั้น (ห้ามใส่สัญลักษณ์หรือเว้นวรรค เช่น %, , . ช่องว่าง)";
+    const aside=pd?.querySelector('aside'); const p=aside?.querySelector('p, div, span'); if(p) p.textContent=SIDE_TEXT;
+    if(pd && !pd.getElementById('waffle-compact-inputs')){
+      const st=pd.createElement('style'); st.id='waffle-compact-inputs';
+      st.textContent=`aside input[type="number"], aside input[data-qa="response-input-number"], aside input[type="text"]{max-width:120px !important; width:120px !important;}`;
+      pd.head.appendChild(st);
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
