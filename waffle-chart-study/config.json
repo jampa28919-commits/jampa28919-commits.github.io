@@ -1,0 +1,239 @@
+{
+  "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v2.1.1/src/parser/ConfigSchema.json",
+  "studyMetadata": {
+    "title": "Waffle Chart",
+    "version": "v1",
+    "authors": [
+      "Dheerissara-6780188726"
+    ],
+    "organizations": [
+      "Your Organization"
+    ],
+    "date": "2025-09-21",
+    "description": "The Effects of Visual Mark Arrangement in Waffle Charts on the Perception of Containment"
+  },
+  "uiConfig": {
+    "logoPath": "waffle-chart-study/assets/logo.png",
+    "contactEmail": "6780188726@cbs.chula.ac.th",
+    "withProgressBar": true,
+    "withSidebar": true
+  },
+  "components": {
+    "intro": {
+      "type": "markdown",
+      "path": "waffle-chart-study/assets/introduction.md",
+      "response": []
+    },
+    "t01": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=0",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t01_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t01_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t01_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t01_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t01_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t01_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t01_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t01_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t01_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t01_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t02": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=1",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t02_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t02_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t02_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t02_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t02_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t02_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t02_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t02_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t02_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t02_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t03": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=2",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t03_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t03_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t03_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t03_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t03_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t03_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t03_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t03_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t03_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t03_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t04": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=3",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t04_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t04_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t04_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t04_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t04_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t04_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t04_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t04_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t04_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t04_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t05": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=4",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t05_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t05_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t05_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t05_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t05_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t05_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t05_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t05_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t05_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t05_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t06": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=5",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t06_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t06_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t06_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t06_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t06_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t06_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t06_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t06_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t06_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t06_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t07": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=6",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t07_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t07_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t07_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t07_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t07_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t07_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t07_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t07_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t07_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t07_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t08": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=7",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t08_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t08_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t08_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t08_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t08_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t08_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t08_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t08_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t08_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t08_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t09": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=8",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t09_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t09_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t09_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t09_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t09_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t09_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t09_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t09_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t09_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t09_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t10": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=9",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t10_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t10_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t10_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t10_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t10_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t10_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t10_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t10_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t10_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t10_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t11": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=10",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t11_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t11_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t11_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t11_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t11_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t11_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t11_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t11_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t11_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t11_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    },
+    "t12": {
+      "type": "website",
+      "path": "waffle-chart-study/assets/waffle-custom.html?idx=11",
+      "instruction": "กราฟแสดงจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) และจำนวนผู้ที่ได้รับการตอบรับเข้าทำงาน (Offer)",
+      "response": [
+        { "id": "t12_phone", "prompt": "มีจำนวนผู้สมัครงานที่ผ่านการคัดกรองเบื้องต้นทางโทรศัพท์ (Phone Screen) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t12_offer", "prompt": "มีจำนวนผู้สมัครงานที่ได้รับการตอบรับเข้าทำงาน (Offer) ทั้งหมดเท่าใด", "type": "shortText", "required": true, "location": "sidebar" },
+        { "id": "t12_pair", "prompt": "(ระบบ) Pair (A-B)", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t12_true_offer", "prompt": "(ระบบ) เฉลย Offer", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t12_true_phone", "prompt": "(ระบบ) เฉลย Phone", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t12_layout", "prompt": "(ระบบ) Layout", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t12_colorDir", "prompt": "(ระบบ) Color Direction", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t12_labelA", "prompt": "(ระบบ) Label A", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t12_labelB", "prompt": "(ระบบ) Label B", "type": "shortText", "required": false, "location": "belowStimulus" },
+        { "id": "t12_group", "prompt": "(ระบบ) Group", "type": "shortText", "required": false, "location": "belowStimulus" }
+      ]
+    }
+  },
+  "sequence": {
+    "order": "fixed",
+    "components": [
+      "intro", "t01", "t02", "t03", "t04", "t05", "t06",
+      "t07", "t08", "t09", "t10", "t11", "t12"
+    ]
+  }
+}
